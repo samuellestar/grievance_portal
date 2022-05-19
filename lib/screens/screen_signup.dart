@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:grievance_portal/constants/colors.dart';
 import 'package:grievance_portal/screens/screen_home.dart';
-import 'package:grievance_portal/screens/screen_signup.dart';
+import 'package:grievance_portal/screens/screen_login.dart';
+
 import '../constants/size.dart';
 
-class ScreenLogin extends StatefulWidget {
-  const ScreenLogin({Key? key}) : super(key: key);
+class ScreenSignup extends StatefulWidget {
+  const ScreenSignup({Key? key}) : super(key: key);
 
   @override
-  State<ScreenLogin> createState() => _ScreenLoginState();
+  State<ScreenSignup> createState() => _ScreenSignupState();
 }
 
-class _ScreenLoginState extends State<ScreenLogin> {
+class _ScreenSignupState extends State<ScreenSignup> {
   final _idController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isDataMatched = false;
-  bool _isVisible = false;
-  final _formKey = GlobalKey<FormState>();
+  final _phoneNoController = TextEditingController();
+  final _passwordcontroller = TextEditingController();
+  final _nameContoller = TextEditingController();
+  final _confirmpasswordcontroller = TextEditingController();
 
+  late final bool _isDataMatched = false;
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,7 +28,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
         backgroundColor: bgcolor,
         body: Form(
           key: _formKey,
-          child: Column(
+          child: ListView(
             children: [
               Flexible(
                 child: Container(
@@ -65,25 +68,43 @@ class _ScreenLoginState extends State<ScreenLogin> {
                     ),
                     heit,
                     TextFormField(
-                      controller: _passwordController,
-                      obscureText: !_isVisible,
+                      controller: _nameContoller,
                       decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isVisible = !_isVisible;
-                            });
-                          },
-                          icon: _isVisible
-                              ? Icon(
-                                  Icons.visibility,
-                                  color: Colors.black,
-                                )
-                              : Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.grey,
-                                ),
+                        hintText: 'Name',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Value empty';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    heit,
+                    TextFormField(
+                      controller: _phoneNoController,
+                      decoration: InputDecoration(
+                        hintText: 'Phone no.',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Value empty';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    heit,
+                    TextFormField(
+                      controller: _passwordcontroller,
+                      obscureText: true,
+                      decoration: InputDecoration(
                         hintText: 'Password',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -98,13 +119,41 @@ class _ScreenLoginState extends State<ScreenLogin> {
                       },
                     ),
                     heit,
+                    TextFormField(
+                      controller: _confirmpasswordcontroller,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Confirm password',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Value empty';
+                        } else if (_passwordcontroller.text ==
+                            _confirmpasswordcontroller.text) {
+                          return null;
+                        } else {
+                          return 'Password doesnot match';
+                        }
+                      },
+                    ),
+                    Visibility(
+                      visible: _isDataMatched,
+                      child: const Text(
+                        'Password doesnot match',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                    heit,
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          _checkLogin(context);
+                          _gotoHome(context);
                         }
                       },
-                      child: const Text('Login'),
+                      child: const Text('Create'),
                       style: ElevatedButton.styleFrom(
                         elevation: 8,
                         primary: Colors.black,
@@ -122,18 +171,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Visibility(
-                      visible: _isDataMatched,
-                      child: const Text(
-                        'Invalid entries',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text('Don\'t have an account?'),
+                        const Text('Already have an account?'),
                         TextButton(
                           onPressed: () {
                             Future.delayed(
@@ -142,12 +184,12 @@ class _ScreenLoginState extends State<ScreenLogin> {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const ScreenSignup()),
+                                          const ScreenLogin()),
                                 );
                               }),
                             );
                           },
-                          child: const Text('SIGN-UP'),
+                          child: const Text('Login'),
                         ),
                       ],
                     )
@@ -161,23 +203,15 @@ class _ScreenLoginState extends State<ScreenLogin> {
     );
   }
 
-  void _checkLogin(BuildContext ctx) {
-    final _id = _idController.text;
-    final _password = _passwordController.text;
-    if (_id == _password) {
-      Future.delayed(Duration.zero, () {
-        setState(() {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: ((ctx1) => const ScreenHome()),
-            ),
-          );
-        });
-      });
-    } else {
+  void _gotoHome(BuildContext ctx) {
+    Future.delayed(Duration.zero, () {
       setState(() {
-        _isDataMatched = true;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: ((ctx1) => const ScreenHome()),
+          ),
+        );
       });
-    }
+    });
   }
 }

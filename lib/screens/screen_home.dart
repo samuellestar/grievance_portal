@@ -147,7 +147,7 @@ class _ScreenHomeState extends State<ScreenHome> {
             ),
             Flexible(
               child: Padding(
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 child: Container(
                   height: 50,
                   decoration: BoxDecoration(
