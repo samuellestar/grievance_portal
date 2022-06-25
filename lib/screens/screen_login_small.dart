@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:grievance_portal/constants/colors.dart';
+import 'package:grievance_portal/helpers/layout.dart';
 import 'package:grievance_portal/screens/screen_home.dart';
-import '../constants/size.dart';
-import '../helpers/layout.dart';
 
-class ScreenLogin extends StatefulWidget {
-  const ScreenLogin({Key? key}) : super(key: key);
+import '../constants/colors.dart';
+import '../constants/size.dart';
+
+class ScreenLoginSmall extends StatefulWidget {
+  const ScreenLoginSmall({Key? key}) : super(key: key);
 
   @override
-  State<ScreenLogin> createState() => _ScreenLoginState();
+  State<ScreenLoginSmall> createState() => _ScreenLoginSmallState();
 }
 
-class _ScreenLoginState extends State<ScreenLogin> {
+class _ScreenLoginSmallState extends State<ScreenLoginSmall> {
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isDataMatched = false;
@@ -43,8 +44,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
               Container(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.2,
-                    right: MediaQuery.of(context).size.width * .3,
-                    left: MediaQuery.of(context).size.width * .3),
+                    right: MediaQuery.of(context).size.width * .15,
+                    left: MediaQuery.of(context).size.width * .15),
                 child: Column(
                   children: [
                     TextFormField(
@@ -112,7 +113,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                         shadowColor: Colors.blueGrey,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 100,
-                          vertical: 18,
+                          vertical: 14,
                         ),
                         textStyle: const TextStyle(
                             fontSize: 20,
