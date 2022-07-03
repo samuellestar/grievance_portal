@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grievance_portal/constants/colors.dart';
-import 'package:grievance_portal/screens/screen_home.dart';
+import 'package:grievance_user_portal/screens/screen_forgot_password.dart';
+
+import '../constants/colors.dart';
 import '../constants/size.dart';
-import '../helpers/layout.dart';
 
 class ScreenLogin extends StatefulWidget {
   const ScreenLogin({Key? key}) : super(key: key);
@@ -14,9 +15,36 @@ class ScreenLogin extends StatefulWidget {
 class _ScreenLoginState extends State<ScreenLogin> {
   final _idController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isDataMatched = false;
   bool _isVisible = false;
+
   final _formKey = GlobalKey<FormState>();
+
+  //signin method
+
+  Future signIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _idController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(e.message.toString()),
+          );
+        },
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _idController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +55,8 @@ class _ScreenLoginState extends State<ScreenLogin> {
           key: _formKey,
           child: ListView(
             children: [
+              //logo image
+
               Flexible(
                 child: Container(
                   width: 300,
@@ -43,10 +73,11 @@ class _ScreenLoginState extends State<ScreenLogin> {
               Container(
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.2,
-                    right: MediaQuery.of(context).size.width * .3,
-                    left: MediaQuery.of(context).size.width * .3),
+                    right: MediaQuery.of(context).size.width * .1,
+                    left: MediaQuery.of(context).size.width * .1),
                 child: Column(
                   children: [
+                    //email field
                     TextFormField(
                       controller: _idController,
                       decoration: InputDecoration(
@@ -64,6 +95,9 @@ class _ScreenLoginState extends State<ScreenLogin> {
                       },
                     ),
                     heit,
+
+                    //password field
+
                     TextFormField(
                       controller: _passwordController,
                       obscureText: !_isVisible,
@@ -98,20 +132,22 @@ class _ScreenLoginState extends State<ScreenLogin> {
                       },
                     ),
                     heit,
+
+                    //signin button
+
                     ElevatedButton(
                       onPressed: () {
-                        // signIn();
                         if (_formKey.currentState!.validate()) {
-                          _checkLogin(context);
+                          signIn();
                         }
                       },
-                      child: const Text('Login'),
+                      child: const Text('Sign-in'),
                       style: ElevatedButton.styleFrom(
                         elevation: 8,
-                        primary: Colors.black,
+                        primary: amb,
                         shadowColor: Colors.blueGrey,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 100,
+                          horizontal: 120,
                           vertical: 18,
                         ),
                         textStyle: const TextStyle(
@@ -123,25 +159,39 @@ class _ScreenLoginState extends State<ScreenLogin> {
                     const SizedBox(
                       height: 20,
                     ),
-                    Visibility(
-                      visible: _isDataMatched,
-                      child: const Text(
-                        'Invalid entries',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        openDialog();
-                      },
-                      child: const Text(
-                        'Forgot password?',
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+
+                    //forgot button
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Future.delayed(
+                              Duration.zero,
+                              (() {
+                                setState(() {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                        builder: ((context) =>
+                                            const ScreenForgotPassword())),
+                                  );
+                                });
+                              }),
+                            );
+                          },
+                          child: const Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Text(
+                              'Forgot password?',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -151,26 +201,6 @@ class _ScreenLoginState extends State<ScreenLogin> {
         ),
       ),
     );
-  }
-
-  void _checkLogin(BuildContext ctx) {
-    final _id = _idController.text;
-    final _password = _passwordController.text;
-    if (_id == _password) {
-      Future.delayed(Duration.zero, () {
-        setState(() {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: ((ctx1) => const ScreenHome()),
-            ),
-          );
-        });
-      });
-    } else {
-      setState(() {
-        _isDataMatched = true;
-      });
-    }
   }
 
   Future openDialog() => showDialog(
@@ -189,7 +219,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                       setState(() {
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: ((context) => siteLayout())),
+                                builder: ((context) => const ScreenLogin())),
                             (route) => false);
                       });
                     }),

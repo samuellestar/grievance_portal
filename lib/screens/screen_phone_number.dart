@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants/colors.dart';
-import '../constants/size.dart';
-import 'screen_home.dart';
+import 'package:grievance_user_portal/constants/size.dart';
+import 'package:grievance_user_portal/screens/screen_home.dart';
 
-class ScreenChangePassword extends StatefulWidget {
-  const ScreenChangePassword({Key? key}) : super(key: key);
+import '../constants/colors.dart';
+
+
+class ScreenChangePhoneNumber extends StatefulWidget {
+  const ScreenChangePhoneNumber({Key? key}) : super(key: key);
 
   @override
-  State<ScreenChangePassword> createState() => _ScreenChangePasswordState();
+  State<ScreenChangePhoneNumber> createState() =>
+      _ScreenChangePhoneNumberState();
 }
 
-class _ScreenChangePasswordState extends State<ScreenChangePassword> {
+class _ScreenChangePhoneNumberState extends State<ScreenChangePhoneNumber> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -33,11 +36,13 @@ class _ScreenChangePasswordState extends State<ScreenChangePassword> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'RESET PASSWORD',
-                style: GoogleFonts.pressStart2p(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+              Flexible(
+                child: Text(
+                  'UPDATE MOBILE NUMBER',
+                  style: GoogleFonts.pressStart2p(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
               heit,
@@ -45,9 +50,8 @@ class _ScreenChangePasswordState extends State<ScreenChangePassword> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: TextFormField(
-                    obscureText: true,
                     decoration: InputDecoration(
-                      hintText: 'Current password',
+                      hintText: 'New phone number',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(35),
                       ),
@@ -58,40 +62,40 @@ class _ScreenChangePasswordState extends State<ScreenChangePassword> {
               const SizedBox(
                 height: 5,
               ),
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'New password',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(35),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50),
-                  child: TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'New password, again',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(35),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Flexible(
+              //   child: Padding(
+              //     padding: const EdgeInsets.symmetric(horizontal: 50),
+              //     child: TextFormField(
+              //       decoration: InputDecoration(
+              //         hintText: 'New password',
+              //         border: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(35),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: 5,
+              // ),
+              // Flexible(
+              //   child: Padding(
+              //     padding: const EdgeInsets.symmetric(horizontal: 50),
+              //     child: TextFormField(
+              //       decoration: InputDecoration(
+              //         hintText: 'New password, again',
+              //         border: OutlineInputBorder(
+              //           borderRadius: BorderRadius.circular(35),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               heit,
               GestureDetector(
-                onTap: () => openDialog(),
+                onTap: () {
+                  openDialog();
+                },
                 child: Container(
                   height: 40,
                   width: 180,
@@ -101,7 +105,7 @@ class _ScreenChangePasswordState extends State<ScreenChangePassword> {
                   ),
                   child: Center(
                     child: Text(
-                      'UPDATE',
+                      'DONE',
                       style: GoogleFonts.pressStart2p(
                         color: bgcolor,
                         fontSize: 14,
