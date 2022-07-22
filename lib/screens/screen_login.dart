@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grievance_user_portal/screens/screen_forgot_password.dart';
+import 'package:flutter_application_1/screens/screen_forgot_password.dart';
 
 import '../constants/colors.dart';
 import '../constants/size.dart';
@@ -81,7 +81,7 @@ class _ScreenLoginState extends State<ScreenLogin> {
                     TextFormField(
                       controller: _idController,
                       decoration: InputDecoration(
-                        hintText: 'Id',
+                        hintText: 'Email',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -202,31 +202,4 @@ class _ScreenLoginState extends State<ScreenLogin> {
       ),
     );
   }
-
-  Future openDialog() => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text(
-            'Reset password link is send to your registered mobile number',
-            style: TextStyle(fontSize: 14),
-          ),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Future.delayed(
-                    Duration.zero,
-                    (() {
-                      setState(() {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: ((context) => const ScreenLogin())),
-                            (route) => false);
-                      });
-                    }),
-                  );
-                },
-                child: const Text('Close'))
-          ],
-        ),
-      );
 }

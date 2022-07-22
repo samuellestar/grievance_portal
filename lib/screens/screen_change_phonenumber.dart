@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_application_1/screens/screen_home.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:grievance_portal/constants/colors.dart';
-import 'package:grievance_portal/constants/size.dart';
-import 'package:grievance_portal/screens/screen_home.dart';
+
+import '../constants/colors.dart';
+import '../constants/size.dart';
 
 class ScreenChangePhoneNumber extends StatefulWidget {
   const ScreenChangePhoneNumber({Key? key}) : super(key: key);
@@ -13,6 +15,8 @@ class ScreenChangePhoneNumber extends StatefulWidget {
 }
 
 class _ScreenChangePhoneNumberState extends State<ScreenChangePhoneNumber> {
+  final _phoneNumberController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -48,6 +52,9 @@ class _ScreenChangePhoneNumberState extends State<ScreenChangePhoneNumber> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: TextFormField(
+                    controller: _phoneNumberController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
                       hintText: 'New phone number',
                       border: OutlineInputBorder(
@@ -92,20 +99,26 @@ class _ScreenChangePhoneNumberState extends State<ScreenChangePhoneNumber> {
               heit,
               GestureDetector(
                 onTap: () {
-                  openDialog();
+                  String ph = _phoneNumberController.text.trim();
+                  int len = ph.length;
+                  if (len != 10) {
+                    errorDialog();
+                  } else {
+                    openDialog();
+                  }
                 },
                 child: Container(
                   height: 40,
                   width: 180,
                   decoration: BoxDecoration(
                     color: amb,
-                    borderRadius: BorderRadius.circular(35),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Center(
                     child: Text(
                       'DONE',
                       style: GoogleFonts.pressStart2p(
-                        color: bgcolor,
+                        color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
@@ -144,6 +157,16 @@ class _ScreenChangePhoneNumberState extends State<ScreenChangePhoneNumber> {
                 },
                 child: const Text('Close'))
           ],
+        ),
+      );
+
+  Future errorDialog() => showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text(
+            'Enter a correct number',
+            style: TextStyle(fontSize: 14),
+          ),
         ),
       );
 }

@@ -12,6 +12,9 @@ class ScreenChangePassword extends StatefulWidget {
 }
 
 class _ScreenChangePasswordState extends State<ScreenChangePassword> {
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,6 +65,7 @@ class _ScreenChangePasswordState extends State<ScreenChangePassword> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: TextFormField(
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: 'New password',
@@ -79,6 +83,7 @@ class _ScreenChangePasswordState extends State<ScreenChangePassword> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 50),
                   child: TextFormField(
+                    controller: _confirmPasswordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: 'New password, again',
@@ -91,19 +96,32 @@ class _ScreenChangePasswordState extends State<ScreenChangePassword> {
               ),
               heit,
               GestureDetector(
-                onTap: () => openDialog(),
+                onTap: () {
+                  String pass = _passwordController.text.trim();
+                  int len = pass.length;
+                  if (len >= 8) {
+                    if (_passwordController.text.trim() ==
+                        _confirmPasswordController.text.trim()) {
+                      openDialog();
+                    } else {
+                      errorConfirmDialog();
+                    }
+                  } else {
+                    errorDialog();
+                  }
+                },
                 child: Container(
                   height: 40,
                   width: 180,
                   decoration: BoxDecoration(
                     color: amb,
-                    borderRadius: BorderRadius.circular(35),
+                    borderRadius: BorderRadius.circular(5),
                   ),
                   child: Center(
                     child: Text(
                       'UPDATE',
                       style: GoogleFonts.pressStart2p(
-                        color: bgcolor,
+                        color: Colors.white,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
@@ -142,6 +160,26 @@ class _ScreenChangePasswordState extends State<ScreenChangePassword> {
                 },
                 child: const Text('Close'))
           ],
+        ),
+      );
+
+  Future errorDialog() => showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text(
+            'Error! Enter a valid password',
+            style: TextStyle(fontSize: 14),
+          ),
+        ),
+      );
+
+  Future errorConfirmDialog() => showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text(
+            'Password does not match',
+            style: TextStyle(fontSize: 14),
+          ),
         ),
       );
 }

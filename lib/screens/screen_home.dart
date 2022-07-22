@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../Widgets/menu.dart';
+import 'package:flutter_application_1/constants/size.dart';
+import 'package:flutter_application_1/screens/screen_profile.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../constants/colors.dart';
 
 class ScreenHome extends StatefulWidget {
@@ -11,322 +14,258 @@ class ScreenHome extends StatefulWidget {
 }
 
 class _ScreenHomeState extends State<ScreenHome> {
-  final _name = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final _subject = TextEditingController();
   final _discribe = TextEditingController();
-  final bool _validator = false;
+  final _resolution = TextEditingController();
+  final _moreinfo = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const widgetMenu(),
+      // appbar
+
       appBar: AppBar(
         elevation: 25,
         backgroundColor: amb,
-        title: Container(
-          height: 50,
-          width: 250,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/logo1.png'),
+        title: Padding(
+          padding: const EdgeInsets.only(
+            left: 10,
+          ),
+          child: Container(
+            height: 50,
+            width: 250,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/logo1.png'),
+              ),
             ),
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: GestureDetector(
+              onTap: () {
+                Future.delayed(
+                  Duration.zero,
+                  (() {
+                    setState(() {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: ((context) => const ScreenProfile())),
+                      );
+                    });
+                  }),
+                );
+              },
+              child: const Icon(
+                Icons.account_circle_rounded,
+                size: 35,
+                color: dark,
+              ),
+            ),
+          )
+        ],
+        centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 40),
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Flexible(
-                child: Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(5)),
-                  child: const Center(
-                    child: Text(
-                      'GRIEVANCE FORM',
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
+
+      //body
+
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40),
+          child: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Flexible(
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: amb, borderRadius: BorderRadius.circular(5)),
+                    child: const Center(
+                      child: Text(
+                        'GRIEVANCE FORM',
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Row(
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'First Name',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
+              heit,
+
+              //
+
+              Row(
+                children: [
+                  //subject
+
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _subject,
+                        decoration: InputDecoration(
+                          hintText: 'Subject of your grievance. *',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Value empty';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
                     ),
                   ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'Middle Name',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
+
+                  //
+                ],
+              ),
+
+              //grievance
+
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _discribe,
+                    decoration: InputDecoration(
+                      hintText: 'Discribe your grievance. *',
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 35,
+                        horizontal: 10,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
                       ),
                     ),
-                  ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hintText: 'Last Name',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[800],
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'ADDRESS',
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
-                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Value empty';
+                      } else {
+                        return null;
+                      }
+                    },
                   ),
                 ),
               ),
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'ADDRESS',
-                    border: OutlineInputBorder(
+
+              //resolution
+
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _resolution,
+                    decoration: InputDecoration(
+                      hintText: 'What resolution do you consider fair? *',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Value empty';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                ),
+              ),
+
+              //futher info
+
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _moreinfo,
+                    decoration: InputDecoration(
+                        hintText: 'An other information you can provide.',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5))),
+                  ),
+                ),
+              ),
+
+              //
+
+              const Flexible(
+                child: SizedBox(
+                  height: 150,
+                ),
+              ),
+
+              //submit button
+
+              Center(
+                child: GestureDetector(
+                  onTap: () {
+                    try {
+                      if (_formKey.currentState!.validate()) {
+                        final User? user = _auth.currentUser;
+                        final _uid = user!.uid;
+                        FirebaseFirestore.instance.collection('grievance').add({
+                          'id': _uid,
+                          'subject': _subject.text,
+                          'grivence': _discribe.text,
+                          'resolution': _resolution.text,
+                          'moreInfo': _moreinfo.text,
+                          'submittedAt': Timestamp.now(),
+                        });
+                        openDialog();
+                      }
+                    } on FirebaseAuthException catch (e) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            content: Text(e.message.toString()),
+                          );
+                        },
+                      );
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 25,
+                    ),
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
+                      color: amb,
                     ),
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: 'STREET',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: 'CITY',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: 'PIN CODE',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(5)),
-                  child: const Center(
                     child: Text(
-                      'CONTACT',
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: 'EMAIL',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: 'PHONE NUMBER',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(5)),
-                  child: const Center(
-                    child: Text(
-                      'COMPLAINT',
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText:
-                              'FIRST DATE ON WHICH THE ISSUE OR EVENT OCCURED',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5))),
-                    ),
-                  ),
-                ),
-                Flexible(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: _name,
-                      decoration: InputDecoration(
-                        hintText: 'NAME(s) OF THE PERSON(s) INVOLVED',
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5)),
-                        errorText: _validator ? 'Value Can\'t Be Empty' : null,
+                      'SUBMIT',
+                      style: GoogleFonts.ibarraRealNova(
+                        fontWeight: FontWeight.bold,
+                        color: bgcolor,
+                        fontSize: 20,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  controller: _discribe,
-                  decoration: InputDecoration(
-                    hintText: 'DISCRIBE YOUR COMPLAINT IN DETAIL',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                    errorText: _validator ? 'Value can\'t be Empty' : null,
-                  ),
-                ),
               ),
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      hintText:
-                          'WHAT RESOLUTION DO YOU CONSIDER FAIR? WHAT RESOLUTION DO YOU SEEK?',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5))),
-                ),
+
+              //
+
+              const SizedBox(
+                height: 60,
               ),
-            ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      hintText: 'AN OTHER INFORMATIONS YOU CAN PROVIDE',
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5))),
-                ),
-              ),
-            ),
-            const Flexible(
-              child: SizedBox(
-                height: 50,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  right: MediaQuery.of(context).size.width * .3,
-                  left: MediaQuery.of(context).size.width * .3),
-              child: ElevatedButton(
-                onPressed: () {
-                  openDialog();
-                },
-                child: const Text('SUBMIT'),
-                style: ElevatedButton.styleFrom(
-                    primary: Colors.grey[900],
-                    padding: const EdgeInsets.symmetric(vertical: 20)),
-              ),
-            ),
-            const SizedBox(
-              height: 60,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

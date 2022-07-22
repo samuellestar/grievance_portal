@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grievance_user_portal/constants/colors.dart';
-import 'package:grievance_user_portal/constants/size.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../constants/colors.dart';
+import '../constants/size.dart';
 
 class ScreenForgotPassword extends StatefulWidget {
   const ScreenForgotPassword({Key? key}) : super(key: key);
@@ -27,7 +29,9 @@ class _ScreenForgotPasswordState extends State<ScreenForgotPassword> {
         context: context,
         builder: (context) {
           return const AlertDialog(
-            content: Text('Password reset link send! Check your email.'),
+            content: Text(
+              'Password reset link send! Check your email.',
+            ),
           );
         },
       );
@@ -50,51 +54,66 @@ class _ScreenForgotPasswordState extends State<ScreenForgotPassword> {
       appBar: AppBar(
         backgroundColor: amb,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          //text
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //text
 
-          Padding(
-            padding: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * .1,
-                left: MediaQuery.of(context).size.width * .1),
-            child: const Text(
-              'Enter your email we will send you a password reset link',
-              style: TextStyle(),
-              textAlign: TextAlign.center,
+            Padding(
+              padding: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width * .1,
+                  left: MediaQuery.of(context).size.width * .1),
+              child: Text(
+                'Forgot Password?',
+                style: GoogleFonts.rokkitt(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
-          ),
-          heit,
+            heit,
 
-          //email field
+            //email field
 
-          Padding(
-            padding: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * .1,
-                left: MediaQuery.of(context).size.width * .1),
-            child: TextFormField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                hintText: 'Email',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+            Padding(
+              padding: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.width * .1,
+                  left: MediaQuery.of(context).size.width * .1),
+              child: TextFormField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  hintText: 'Enter Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
             ),
-          ),
-          heit,
+            heit,
 
-          //button
+            //button
 
-          MaterialButton(
-            onPressed: () {
-              _passwordreset();
-            },
-            color: amb,
-            child: const Text('Reset password'),
-          )
-        ],
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: amb,
+                padding: const EdgeInsets.symmetric(horizontal: 34),
+              ),
+              onPressed: () {
+                _passwordreset();
+              },
+              child: const Text(
+                'Send Link',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
